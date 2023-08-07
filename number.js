@@ -2,12 +2,14 @@ var guess = ""
 var currentRow = 1
 var word
 var rows = prompt("Number of rows?")
+var digits = prompt("Number of digits?")
 function intRandom(min,max) {
 	return Math.floor(Math.random() * (max-min+1)) + min
 }
 function generate() {
 	//Generate rows and stuffs
-	rows = isNaN(rows*1) ? 6 : rows*1
+	rows = isNaN(rows||6*1) ? 6 : rows*1
+	digits = isNaN(rows||5*1) ? 5 : digits*1
 	var k = 0
 	while (k++ < rows) {
 		var row = table.insertRow()
@@ -16,27 +18,28 @@ function generate() {
 		colorCell.style = "background-color: hsl(" + (k*(15/Math.log10(rows+1))+rows*30)%360 +",80%,60%)"
 		colorCell.textContent = k 
 		var cells = 0
-		while (cells++ < 5) {
+		while (cells++ < digits+1) {
 			var cell = row.insertCell()
 			cell.id = "c" + k + cells
 		}
 	}
 	
 	//Generate word
-	word = normalWordList[intRandom(0,normalWordList.length-1)].toUpperCase()
+	word = intRandom(0,10**digits-1)+""
+	word = "0".repeat(digits-word.length) + word
 }
 function keyPress(e) {
 	if (gameEnd) return
 	var key = e.key
 	if (key == "Enter") {
-		if (guess.length == 5) guessWord()
+		if (guess.length == digits) guessWord()
 	} else if (key == "Backspace") {
 		if (guess != "") guess = guess.split("").splice(0,guess.length-1).join("")
-	} else if (key.length == 1 && key.match(/[a-z]/g)) {
-		if (guess.length < 5) guess += key.toUpperCase()
+	} else if (key.length == 1 && key.match(/[0-9]/g)) {
+		if (guess.length < digits) guess += key
 	}
 	var k = 0
-	while (k++ < 5) document.getElementById("c" + currentRow + k).textContent = guess[k-1]||""
+	while (k++ < digits) document.getElementById("c" + currentRow + k).textContent = guess[k-1]||""
 }
 function guessWord() {
 	if (gameEnd) return
@@ -62,6 +65,13 @@ function guessWord() {
 			cell.className = "yellow"
 			counts[guess[k]]--
 		}
+	}
+	//Round 3: <=>
+	var signCell = document.getElementById("c" + currentRow + (digits+1))
+	switch (Math.sign(guess-word)) {
+		case -1: signCell.textContent = "<";signCell.className="red";break;
+		case 0: signCell.textContent = "=";signCell.className="purple";break;
+		case 1: signCell.textContent = ">";signCell.className="blue";break;
 	}
 	currentRow++
 	gameEnd = currentRow > rows || guess == word

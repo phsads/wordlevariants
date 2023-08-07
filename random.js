@@ -23,7 +23,7 @@ function generate() {
 	}
 	
 	//Generate word
-	word = normalWordList[intRandom(0,normalWordList.length-1)].toUpperCase()
+	word = String.fromCharCode(intRandom(65,90),intRandom(65,90),intRandom(65,90),intRandom(65,90),intRandom(65,90))
 }
 function keyPress(e) {
 	if (gameEnd) return

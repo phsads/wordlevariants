@@ -16,6 +16,15 @@
 .green {
 	background-color:#6aaa64
 }
+.red {
+	background-color:#f56464
+}
+.purple {
+	background-color: #b964f5;
+}
+.blue {
+	background-color: #64adf5;
+}
 body {
 	background-color:#000000;
 	font-family: "Inconsolata";
@@ -45,16 +54,14 @@ td,tr {
 </body>
 <script>
 var table = document.getElementById("gameTable"), gameEnd = false
-function intRandom(min,max) {
-	return Math.floor(Math.random() * (max-min+1)) + min
-}
 function startGame() {
 	//Modes
-	var modeType = prompt("Mode?"), modes = ["classic","deceptive"]
-	mode = modes.indexOf(modeType.toLowerCase()) == -1 ? "classic" : modeType
-	var script = document.createElement("script")
+	var mode = prompt("Mode?")
+	if (mode == null) mode = "classic"
+	script = document.createElement("script")
 	script.setAttribute("src",mode+".js")
-	document.body.appendChild(script)
+	script.setAttribute("id","scriptExist")
+	document.body.appendChild(script) //if you enter it wrong and it doesnt load, cry about it (and enter it correctly)
 }
 </script>
 </html>

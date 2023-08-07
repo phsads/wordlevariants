@@ -3,6 +3,9 @@ var currentRow = 1
 var word
 var rows = prompt("Number of rows?")
 var deceptionLevel
+function intRandom(min,max) {
+	return Math.floor(Math.random() * (max-min+1)) + min
+}
 function generate() {
 	//Generate rows and stuffs
 	rows = isNaN(rows*1) ? 6 : rows*1
@@ -11,7 +14,7 @@ function generate() {
 		var row = table.insertRow()
 		row.id = "r" + k
 		var colorCell = row.insertCell()
-		colorCell.style = "background-color: hsl(" + (k*(15/Math.log10(rows+1))+rows*30)%360 +",80%,70%)"
+		colorCell.style = "background-color: hsl(" + (k*(15/Math.log10(rows+1))+rows*30)%360 +",80%,60%)"
 		colorCell.textContent = k 
 		var cells = 0
 		while (cells++ < 5) {
